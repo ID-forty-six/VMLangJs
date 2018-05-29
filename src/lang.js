@@ -271,45 +271,62 @@
      * @return {string} The translation message for the given key.
      */
     Lang.prototype._getMessage = function(key, locale) {
-        locale = locale || this.getLocale();
-        key = this._parseKey(key, locale);
+        // locale = locale || this.getLocale();
+        // key = this._parseKey(key, locale);
 
         // Ensure message source exists.
-        if (this.messages[key.source] === undefined && this.messages[key.sourceFallback] === undefined) {
+        // if (this.messages[key.source] === undefined && this.messages[key.sourceFallback] === undefined) {
+        //     return null;
+        // }
+
+        if (this.messages === undefined)
+        {
             return null;
+        } else {
+            //visi vertimai is json
+            var messages = this.messages;
         }
 
-        // Get message from default locale.
-        var message = this.messages[key.source];
-        var entries = key.entries.slice();
-        var subKey = '';
-        while (entries.length && message !== undefined) {
-            var subKey = !subKey ? entries.shift() : subKey.concat('.', entries.shift());
-            if (message[subKey] !== undefined) {
-                message = message[subKey]
-                subKey = '';
-            }
-        }
-
-        // Get message from fallback locale.
-        if (typeof message !== 'string' && this.messages[key.sourceFallback]) {
-            message = this.messages[key.sourceFallback];
-            entries = key.entries.slice();
-            subKey = '';
-            while (entries.length && message !== undefined) {
-                var subKey = !subKey ? entries.shift() : subKey.concat('.', entries.shift());
-                if (message[subKey]) {
-                    message = message[subKey]
-                    subKey = '';
-                }
-            }
-        }
+        //key tai verciama fraze
+        var message = messages[key];
 
         if (typeof message !== 'string') {
             return null;
         }
 
         return message;
+
+        // // Get message from default locale.
+        // var message = this.messages[key.source];
+        // var entries = key.entries.slice();
+        // var subKey = '';
+        // while (entries.length && message !== undefined) {
+        //     var subKey = !subKey ? entries.shift() : subKey.concat('.', entries.shift());
+        //     if (message[subKey] !== undefined) {
+        //         message = message[subKey]
+        //         subKey = '';
+        //     }
+        // }
+
+        // // Get message from fallback locale.
+        // if (typeof message !== 'string' && this.messages[key.sourceFallback]) {
+        //     message = this.messages[key.sourceFallback];
+        //     entries = key.entries.slice();
+        //     subKey = '';
+        //     while (entries.length && message !== undefined) {
+        //         var subKey = !subKey ? entries.shift() : subKey.concat('.', entries.shift());
+        //         if (message[subKey]) {
+        //             message = message[subKey]
+        //             subKey = '';
+        //         }
+        //     }
+        // }
+
+        // if (typeof message !== 'string') {
+        //     return null;
+        // }
+
+        // return message;
     };
 
     /**
